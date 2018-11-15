@@ -21,22 +21,38 @@ local scene = composer.newScene( sceneName )
 ----------------------------------------------------------------------------------------
 -- LOCAL VARIABLES
 -----------------------------------------------------------------------------------------
- 
+--local logo = display.newImageRect("Images/CompanyLogo.png", 500, 500)
+--local logo.x = 0
+--local logo.y = display.contentHeight/2
+local companyName1
+local companyName2
 -- The local variables for this scene
-local beetleship
-local scrollXSpeed = 8
-local scrollYSpeed = -3
-local jungleSounds = audio.loadSound("Sounds/animals144.mp3")
-local jungleSoundsChannel
+--local companyName1 = display.newText( " Jumping ", 1000, 500, nil, 70 )
+--local companyName2 = display.newText( " Animations ", 1000, 600, nil, 70 )
+local spinSound = audio.loadSound( "Sounds/spinSound.WAV")
+local spinSoundChannel
+--local logo = display.newImageRect("Images/CompanyLogo.png", 500, 500)
+
 
 --------------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 --------------------------------------------------------------------------------------------
 
 -- The function that moves the beetleship across the screen
-local function moveBeetleship()
-    beetleship.x = beetleship.x + scrollXSpeed
-    beetleship.y = beetleship.y + scrollYSpeed
+local function MoveLogo()
+
+    -- the logo will move and rotate to the center of the screen
+    transition.to( logo, { rotation = logo.rotation-360, time=4000, onComplete=spinImage})
+    transition.to( logo, {x=512, y=384, time=3000})
+end
+
+local function MoveText()
+
+    -- the text will move and rotate to the center of the screen
+    transition.to( companyName1, { rotation = companyName1.rotation-360, time=4000, onComplete=spinImage})
+    transition.to( companyName1, {x=710, y=490, time=3000})
+    transition.to( companyName2, { rotation = companyName2.rotation-360, time=4000, onComplete=spinImage})
+    transition.to( companyName2, {x=710, y=580, time=3000})
 end
 
 -- The function that will go to the main menu 
@@ -57,15 +73,15 @@ function scene:create( event )
     -- set the background to be black
     display.setDefault("background", 0, 0, 0)
 
-    -- Insert the beetleship image
-    beetleship = display.newImageRect("Images/beetleship.png", 200, 200)
+    logo = display.newImageRect("Images/CompanyLogo.png", 500, 500)
+    logo.x = 0
+    logo.y = display.contentHeight/2
 
-    -- set the initial x and y position of the beetleship
-    beetleship.x = 100
-    beetleship.y = display.contentHeight/2
+    companyName1 = display.newText( " Jumping ", 1000, 500, nil, 70 )
+    companyName2 = display.newText( " Animations ", 1000, 600, nil, 70 )
 
     -- Insert objects into the scene group in order to ONLY be associated with this scene
-    sceneGroup:insert( beetleship )
+    sceneGroup:insert( logo, companyName1, companyName2 )
 
 end -- function scene:create( event )
 
@@ -90,10 +106,10 @@ function scene:show( event )
 
     elseif ( phase == "did" ) then
         -- start the splash screen music
-        jungleSoundsChannel = audio.play(jungleSounds )
+        spinSoundChannel = audio.play(spinSound)
 
         -- Call the moveBeetleship function as soon as we enter the frame.
-        Runtime:addEventListener("enterFrame", moveBeetleship)
+        Runtime:addEventListener("enterFrame", MoveLogo)
 
         -- Go to the main menu screen after the given time.
         timer.performWithDelay ( 3000, gotoMainMenu)          
@@ -124,7 +140,7 @@ function scene:hide( event )
     elseif ( phase == "did" ) then
         
         -- stop the jungle sounds channel for this screen
-        audio.stop(jungleSoundsChannel)
+        audio.stop(spinSound)
     end
 
 end --function scene:hide( event )
