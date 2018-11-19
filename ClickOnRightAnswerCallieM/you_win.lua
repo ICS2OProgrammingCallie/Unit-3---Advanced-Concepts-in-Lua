@@ -58,7 +58,7 @@ function scene:create( event )
     local youWinSound = audio.loadSound("Sounds/youWinSound.WAV")  
     local youWinSoundChannel
     -- playing the sound
-    youWinSoundChannel = audio.play(youWinSound)
+    
 
     -- Associating display objects with this scene 
     sceneGroup:insert( bkg )
@@ -84,7 +84,8 @@ function scene:show( event )
     -----------------------------------------------------------------------------------------
 
     elseif ( phase == "did" ) then
-
+        
+        youWinSoundChannel = audio.play(youWinSound)
         -- Called when the scene is now on screen.
         -- Insert code here to make the scene come alive.
         -- Example: start timers, begin animation, play audio, etc.

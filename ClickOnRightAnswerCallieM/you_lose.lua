@@ -54,12 +54,6 @@ function scene:create( event )
     bkg.width = display.contentWidth
     bkg.height = display.contentHeight
     -----------------------------------------------------------------------------------------     
-    -- local variables for sound
-    --local youLoseSound = audio.loadSound("Sounds/youLoseSound.WAV")  
-    --local youWinSoundChannel
-    -- playing the sound
-    --youLoseSoundChannel = audio.play(youLoseSound)
-
     -- Associating display objects with this scene 
     sceneGroup:insert( bkg )
 end

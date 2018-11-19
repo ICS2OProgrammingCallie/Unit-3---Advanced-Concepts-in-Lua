@@ -43,14 +43,14 @@ local instructionsbutton
 
 -- Creating Transition Function to Credits Page
 local function CreditsTransition( )       
-    composer.gotoScene( "credits_screen", {effect = "flipFadeOutIn", time = 500})
+    composer.gotoScene( "credits_screen", {effect = "zoomOutIn", time = 500})
 end 
 
 -----------------------------------------------------------------------------------------
 
 -- Creating Transition to Level1 Screen
 local function Level1ScreenTransition( )
-    composer.gotoScene( "level1_screen", {effect = "zoomInOutFade", time = 1000})
+    composer.gotoScene( "level1_screen", {effect = "fade", time = 1000})
 end    
 
 -- INSERT LOCAL FUNCTION DEFINITION THAT GOES TO INSTRUCTIONS SCREEN 
@@ -93,6 +93,9 @@ function scene:create( event )
             -- Set its position on the screen relative to the screen size
             x = display.contentWidth/2,
             y = display.contentHeight*7/8,
+
+            width = 320,
+            height = 200,
             -- Insert the images here
             defaultFile = "Images/PlayButtonUnpressed.png",
             overFile = "Images/PlayButtonPressed.png",
@@ -108,9 +111,10 @@ function scene:create( event )
     creditsButton = widget.newButton( 
         {
             -- Set its position on the screen relative to the screen size
-            x = display.contentWidth*7/8,
+            x = display.contentWidth*6.7/8,
             y = display.contentHeight*7/8,
-
+            width = 320,
+            height = 200,
             -- Insert the images here
             defaultFile = "Images/CreditsButtonUnpressed.png",
             overFile = "Images/CreditsButtonPressed.png",
@@ -123,9 +127,11 @@ function scene:create( event )
     instructionsbutton = widget.newButton(
         {
             -- Set its position on the screen relative to the screen size
-            x = display.contentWidth*1/8,
+            x = display.contentWidth*1.3/8,
             y = display.contentHeight*7/8,
-
+            
+            width = 320,
+            height = 200,
             -- Insert the images here
             defaultFile = "Images/InstructionsButtonUnpressed.png",
             overFile = "Images/InstructionsButtonPressed.png",
