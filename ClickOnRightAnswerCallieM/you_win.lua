@@ -58,7 +58,7 @@ function scene:create( event )
     local youWinSound = audio.loadSound("Sounds/youWinSound.WAV")  
     local youWinSoundChannel
     -- playing the sound
-    
+    youWinSoundChannel = audio.play(youWinSound)
 
     -- Associating display objects with this scene 
     sceneGroup:insert( bkg )

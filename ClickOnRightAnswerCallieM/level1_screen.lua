@@ -39,7 +39,7 @@ local bkg
 
 -- determine the range for the numbers to add
 local MIN_NUM = 1
-local MAX_NUM = 10
+local MAX_NUM = 15
 
 -- the variables containing the first and second numbers to add for the equation
 local firstNumber
@@ -79,13 +79,16 @@ local level1Text
 -- Boolean variable that states if user clicked the answer or not
 local alreadyClickedAnswer = false
 
--- variables for the sound 
-local incorrectAnswerSound = audio.loadSound("Sounds/WrongBuzzer.mp3")
-local incorrectAnswerSoundChannel
+
 -----------------------------------------------------------------------------------------
 -- SOUND
 -----------------------------------------------------------------------------------------
 
+-- variables for the sound 
+local incorrectAnswerSound = audio.loadSound("Sounds/WrongBuzzer.mp3")
+local incorrectAnswerSoundChannel
+local correctAnswerSound = audio.loadSound("Sounds/CorrectAnswer.mp3")
+local correctAnswerSoundChannel
 
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
@@ -94,9 +97,9 @@ local incorrectAnswerSoundChannel
 local function DetermineAnswers()
     -- calculate the correct answer as well as the wrong answers
     answer = firstNumber + secondNumber
-    wrongAnswer1 = answer + math.random(1,4)
-    wrongAnswer2 = answer + math.random(5,8)
-    wrongAnswer3 = answer + math.random(9,12)
+    wrongAnswer1 = answer + math.random(1,5)
+    wrongAnswer2 = answer + math.random(6,10)
+    wrongAnswer3 = answer + math.random(11,15)
 end
 
 -- Function that changes the answers for a new question and places them randomly in one of the positions
@@ -173,10 +176,18 @@ local function RestartScene()
     numberCorrectText.text = "Number correct = " .. tostring(numberCorrect)
 
     -- if they have 0 lives, go to the You Lose screen
-    if (lives == 0) then
-        composer.gotoScene("you_lose")
-    else 
+        if (lives == 0) then
+            composer.gotoScene("you_lose")
+        else 
 
+            DisplayAddEquation()
+            DetermineAnswers()
+            DisplayAnswers()
+        end
+
+    if (numberCorrect == 2) then
+        composer.gotoScene("you_win")
+    else
         DisplayAddEquation()
         DetermineAnswers()
         DisplayAnswers()
@@ -195,6 +206,8 @@ local function TouchListenerAnswer(touch)
         -- if the user gets the answer right, display Correct and call RestartSceneRight
         if (answer == tonumber(userAnswer)) then     
             correctText.isVisible = true
+            -- play the correct sound
+            correctAnswerSoundChannel = audio.play(correctAnswerSound)
             -- increase the number correct by 1
             numberCorrect = numberCorrect + 1
             -- call RestartScene after 1 second
@@ -321,20 +334,20 @@ function scene:create( event )
     bkg.height = display.contentHeight
 
     -- create the text object that will hold the add equation. Make it empty for now.
-    addEquationTextObject = display.newText( "", display.contentWidth*1/4, display.contentHeight*2/5, nil, 50 )
+    addEquationTextObject = display.newText( "", display.contentWidth*1/4, display.contentHeight*2.5/5, nil, 75 )
 
     -- sets the color of the add equation text object
-    addEquationTextObject:setTextColor(155/255, 42/255, 198/255)
+    addEquationTextObject:setTextColor(170/255, 0/255, 178/255)
 
     -- create the text objects that will hold the correct answer and the wrong answers
-    answerTextObject = display.newText("", display.contentWidth*.4, display.contentHeight/2, nil, 50 )
-    wrongAnswer1TextObject = display.newText("", display.contentWidth*.3, display.contentHeight/2, nil, 50 )
-    wrongAnswer2TextObject = display.newText("", display.contentWidth*.2, display.contentHeight/2, nil, 50 )
-    wrongAnswer3TextObject = display.newText("", display.contentWidth*.2, display.contentHeight/2, nil, 50 )
-    numberCorrectText = display.newText("", display.contentWidth*4/5, display.contentHeight*6/7, nil, 25)
+    answerTextObject = display.newText("", display.contentWidth*.4, display.contentHeight/1.6, nil, 70 )
+    wrongAnswer1TextObject = display.newText("", display.contentWidth*.3, display.contentHeight/1.6, nil, 70 )
+    wrongAnswer2TextObject = display.newText("", display.contentWidth*.2, display.contentHeight/1.6, nil, 70 )
+    wrongAnswer3TextObject = display.newText("", display.contentWidth*.2, display.contentHeight/1.6, nil, 70 )
+    numberCorrectText = display.newText("", display.contentWidth*4/5, display.contentHeight*5.9/7, nil, 40)
 
     -- create the text object that will hold the number of lives
-    livesText = display.newText("", display.contentWidth*4/5, display.contentHeight*8/9, nil, 25) 
+    livesText = display.newText("", display.contentWidth*4/5, display.contentHeight*8/9, nil, 40) 
 
     -- create the text object that will say congratulations, set the colour and then hide it
     congratulationText = display.newText("Good job!", display.contentWidth/2, display.contentHeight*2/5, nil, 50 )
@@ -342,11 +355,11 @@ function scene:create( event )
     congratulationText.isVisible = false
 
     -- create the text object that will say Correct, set the colour and then hide it
-    correctText = display.newText("Correct", display.contentWidth/2, display.contentHeight*1/3, nil, 50 )
+    correctText = display.newText("Correct!", display.contentWidth/2, display.contentHeight*1.3/3, nil, 50 )
     correctText:setTextColor(100/255, 47/255, 210/255)
     correctText.isVisible = false
 
-    incorrectText = display.newText("Incorrect", display.contentWidth/2, display.contentHeight*1/3, nil, 50 )
+    incorrectText = display.newText("Incorrect", display.contentWidth/2, display.contentHeight*1.3/3, nil, 50 )
     incorrectText:setTextColor(100/255, 47/255, 210/255)
     incorrectText.isVisible = false
 
@@ -395,6 +408,10 @@ function scene:show( event )
     -----------------------------------------------------------------------------------------
 
     elseif ( phase == "did" ) then
+        -- bkg music
+        local bkgMusic = audio.loadSound("Sounds/level1Music.WAV")
+        local bkgMusicChannel
+        bkgMusicChannel = audio.play(bkgMusic)
 
         -- initialize the number of lives and number correct 
         lives = 2
