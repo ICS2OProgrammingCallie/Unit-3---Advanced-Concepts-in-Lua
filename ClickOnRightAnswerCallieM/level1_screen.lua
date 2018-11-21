@@ -97,15 +97,15 @@ local correctAnswerSoundChannel
 local function DetermineAnswers()
     -- calculate the correct answer as well as the wrong answers
     answer = firstNumber + secondNumber
-    wrongAnswer1 = answer + math.random(1,5)
+    wrongAnswer1 = answer - math.random(1,5)
     wrongAnswer2 = answer + math.random(6,10)
-    wrongAnswer3 = answer + math.random(11,15)
+    wrongAnswer3 = answer + math.random(1,5)
 end
 
 -- Function that changes the answers for a new question and places them randomly in one of the positions
 local function DisplayAnswers( )
 
-    local answerPosition = math.random(1,3)
+    local answerPosition = math.random(1,4)
     answerTextObject.text = tostring( answer )
     wrongAnswer1TextObject.text = tostring( wrongAnswer1 )
     wrongAnswer2TextObject.text = tostring( wrongAnswer2 )
