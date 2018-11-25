@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------------------------
 --
 -- level1_screen.lua
--- Created by: Ms Raffin
+-- Created by: Callie McWaters
 -- Date: Nov. 22nd, 2014
 -- Description: This is the level 1 screen of the game.
 -----------------------------------------------------------------------------------------
@@ -174,12 +174,7 @@ local function YouLoseTransition()
 end
 
 local function onCollision( self, event )
-    -- for testing purposes
-    --print( event.target )        --the first object in the collision
-    --print( event.other )         --the second object in the collision
-    --print( event.selfElement )   --the element (number) of the first object which was hit in the collision
-    --print( event.otherElement )  --the element (number) of the second object which was hit in the collision
-    --print( event.target.myName .. ": collision began with " .. event.other.myName )
+
 
     if ( event.phase == "began" ) then
 
@@ -361,7 +356,7 @@ function scene:create( event )
     local sceneGroup = self.view
 
     -- Insert the background image
-    bkg_image = display.newImageRect("Images/Level-1BKG.png", display.contentWidth, display.contentHeight)
+    bkg_image = display.newImageRect("Images/Level 1 Screen.png", display.contentWidth, display.contentHeight)
     bkg_image.x = display.contentWidth / 2 
     bkg_image.y = display.contentHeight / 2
 
