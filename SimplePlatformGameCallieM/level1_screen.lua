@@ -63,6 +63,7 @@ local lArrow
 
 local motionx = 0
 local SPEED = 7
+local speed = -7
 local LINEAR_VELOCITY = -100
 local GRAVITY = 5
 
@@ -87,7 +88,7 @@ local function right (touch)
 end
 
 local function left (touch)
-    motionx = SPEED
+    motionx = speed
     character.xScale = -1
 end
 
