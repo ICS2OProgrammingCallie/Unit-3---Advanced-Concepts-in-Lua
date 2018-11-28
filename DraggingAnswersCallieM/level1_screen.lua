@@ -2,6 +2,7 @@
 --
 -- game_level1.lua
 -- Created by: Daniel
+-- Edited by: Callie
 -- Date: Nov. 22nd, 2014
 -- Description: This is the level 1 screen of the game.
 -----------------------------------------------------------------------------------------
@@ -74,7 +75,7 @@ local userAnswerBoxPlaceholder
 local correctSound
 local booSound
 
-local amountCorrect
+local amountCorrect = 0
 
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
@@ -220,9 +221,13 @@ local function PositionAnswers()
 end
 
 -- Transitioning Function to YouWin screen
-local function YouWinTransitionLevel1( )
-    composer.gotoScene("you_win", {effect = "fade", time = 500})
+local function YouWin()
+    if (amountCorrect == 3) then
+        composer.gotoScene("you_win", {effect = "fade", time = 500})
+    end
 end
+
+
 
 -- Function to Restart Level 1
 local function RestartLevel1()
@@ -230,6 +235,7 @@ local function RestartLevel1()
     DetermineAlternateAnswers()
     PositionAnswers()    
 end
+
 
 -- Function to Check User Input
 local function CheckUserAnswerInput()
@@ -273,6 +279,7 @@ local function TouchListenerAnswerbox(touch)
                 -- call the function to check if the user's input is correct or not
                 CheckUserAnswerInput()
 
+                amountCorrect = amountCorrect + 1
             --else make box go back to where it was
             else
                 answerbox.x = answerboxPreviousX
@@ -281,6 +288,13 @@ local function TouchListenerAnswerbox(touch)
         end
     end                
 end 
+
+local function YouWin()
+    if (amountCorrect == 3) then
+        composer.gotoScene("you_win", {effect = "fade", time = 500})
+    end
+end
+
 
 local function TouchListenerAnswerBox1(touch)
     --only work if none of the other boxes have been touched
@@ -478,6 +492,10 @@ function scene:create( event )
     userAnswerBoxPlaceholder = display.newImageRect("Images/userAnswerBoxPlaceholder.png",  130, 130, 0, 0)
     userAnswerBoxPlaceholder.x = display.contentWidth * 0.6
     userAnswerBoxPlaceholder.y = display.contentHeight * 0.9
+
+    correctText = display.newText("Correct!", display.contentWidth/2, display.contentHeight*1.3/3, nil, 50 )
+    correctText:setTextColor(100/255, 47/255, 210/255)
+    correctText.isVisible = false
 
     ----------------------------------------------------------------------------------
     --adding objects to the scene group
