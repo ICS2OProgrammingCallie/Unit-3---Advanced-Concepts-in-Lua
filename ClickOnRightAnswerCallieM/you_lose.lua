@@ -77,11 +77,7 @@ function scene:show( event )
 
     -----------------------------------------------------------------------------------------
 
-    elseif ( phase == "did" ) then
-
-        -- Called when the scene is now on screen.
-        -- Insert code here to make the scene come alive.
-        -- Example: start timers, begin animation, play audio, etc.
+    elseif ( phase == "did" ) then.
     end
 
 end
