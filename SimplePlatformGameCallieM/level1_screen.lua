@@ -79,6 +79,9 @@ local theBall
 
 local questionsAnswered = 0
 
+-- Sound Variables
+local spikeSound = audio.loadSound("Sounds/Pop.mp3")
+local spikeSoundChannel
 -----------------------------------------------------------------------------------------
 -- LOCAL SCENE FUNCTIONS
 ----------------------------------------------------------------------------------------- 
@@ -186,14 +189,14 @@ local function onCollision( self, event )
 
     if ( event.phase == "began" ) then
 
-        --Pop sound
-        popSoundChannel = audio.play(popSound)
 
         if  (event.target.myName == "spikes1") or 
             (event.target.myName == "spikes2") or
             (event.target.myName == "spikes3") then
 
-            -- add sound effect here
+           
+            --spike sound
+            spikeSoundChannel = audio.play(spikeSound)
 
             -- remove runtime listeners that move the character
             RemoveArrowEventListeners()
@@ -214,19 +217,19 @@ local function onCollision( self, event )
 
             elseif (numLives == 2) then
                 --update hearts
-                heart1.isVisible = true
                 heart2.isVisible = true
+                heart1.isVisible = true
                 heart3.isVisible = false
                 timer.performWithDelay(200, ReplaceCharacter)
 
             elseif (numLives == 1) then
                 -- update hearts
-                heart1.isVisible = true
-                heart2.isVisible = true
                 heart3.isVisible = false
+                heart1.isVisible = true 
+                heart2.isVisible = false
                 timer.performWithDelay(200, ReplaceCharacter) 
 
-            elseif (numLives == 0) then
+            else
                 -- update hearts
                 heart1.isVisible = false
                 heart2.isVisible = false
@@ -255,21 +258,15 @@ local function onCollision( self, event )
             questionsAnswered = questionsAnswered + 1
         end
 
-        if (event.target.myName == "door") then
-            --check to see if the user has answered 5 questions
-            if (questionsAnswered == 3) then
-                -- after getting 3 questions right, go to the you win screen
-            end
+        if (event.target.myName == "door") and
+            (questionsAnswered == 3) then
+            YouWinTransition()
         end        
 
     end
 end
 
-local function door()
-    if (questionsAnswered == 3 ) then
-        YouWinTransition()
-    end
-end
+
 
 local function AddCollisionListeners()
     -- if character collides with ball, onCollision will be called
@@ -605,7 +602,7 @@ function scene:show( event )
         -- Insert code here to make the scene come alive.
         -- Example: start timers, begin animation, play audio, etc.
 
-        numLives = 2
+        numLives = 3
         questionsAnswered = 0
 
         -- make all soccer balls visible
