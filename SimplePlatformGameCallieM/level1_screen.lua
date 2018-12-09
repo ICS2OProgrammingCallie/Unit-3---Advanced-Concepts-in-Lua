@@ -269,7 +269,7 @@ end
 
 
 local function AddCollisionListeners()
-    -- if character collides with ball, onCollision will be called
+    -- if character collides with spikes, onCollision will be called
     spikes1.collision = onCollision
     spikes1:addEventListener( "collision" )
     spikes2.collision = onCollision
