@@ -77,6 +77,15 @@ local booSound
 
 local amountCorrect = 0
 
+local lives = 2
+
+-- SOUND VARIABLES
+
+local wrongSound = audio.loadSound( "Sounds/boo.mp3")
+local wrongSoundChannel
+local correctSound = audio.loadSound( "Sounds/Correct.wav")
+local correctSoundChannel
+
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 -----------------------------------------------------------------------------------------
@@ -220,12 +229,7 @@ local function PositionAnswers()
     end
 end
 
--- Transitioning Function to YouWin screen
-local function YouWin()
-    if (amountCorrect == 3) then
-        composer.gotoScene("you_win", {effect = "fade", time = 500})
-    end
-end
+
 
 
 
@@ -276,10 +280,13 @@ local function TouchListenerAnswerbox(touch)
                 answerbox.y = userAnswerBoxPlaceholder.y
                 userAnswer = correctAnswer
 
-                -- call the function to check if the user's input is correct or not
                 CheckUserAnswerInput()
 
+                correctSoundChannel = audio.play(correctSound)
+
                 amountCorrect = amountCorrect + 1
+
+                
             --else make box go back to where it was
             else
                 answerbox.x = answerboxPreviousX
@@ -289,11 +296,6 @@ local function TouchListenerAnswerbox(touch)
     end                
 end 
 
-local function YouWin()
-    if (amountCorrect == 3) then
-        composer.gotoScene("you_win", {effect = "fade", time = 500})
-    end
-end
 
 
 local function TouchListenerAnswerBox1(touch)
@@ -326,6 +328,8 @@ local function TouchListenerAnswerBox1(touch)
 
                 -- call the function to check if the user's input is correct or not
                 CheckUserAnswerInput()
+                wrongSoundChannel = audio.play(wrongSound)
+                lives = lives - 1
 
             --else make box go back to where it was
             else
@@ -367,6 +371,10 @@ local function TouchListenerAnswerBox2(touch)
                 -- call the function to check if the user's input is correct or not
                 CheckUserAnswerInput()
 
+                wrongSoundChannel = audio.play(wrongSound)
+
+                lives = lives - 1
+
             --else make box go back to where it was
             else
                 alternateAnswerBox2.x = alternateAnswerBox2PreviousX
@@ -407,6 +415,10 @@ local function TouchListenerAnswerBox3(touch)
                 -- call the function to check if the user's input is correct or not
                 CheckUserAnswerInput()
 
+                wrongSoundChannel = audio.play(wrongSound)
+
+                lives = lives - 1
+
             --else make box go back to where it was
             else
                 alternateAnswerBox3.x = alternateAnswerBox3PreviousX
@@ -415,6 +427,20 @@ local function TouchListenerAnswerBox3(touch)
         end
     end
 end 
+
+-- Transitioning Function to YouWin screen
+local function YouWin()
+    if (amountCorrect == 3) then
+        composer.gotoScene( "you_win")
+    end
+end
+
+local function YouLose()
+    if (lives == 0) then
+        composer.gotoScene("you_lose", {effect = "fade", time = 500})
+    end
+end
+
 
 -- Function that Adds Listeners to each answer box
 local function AddAnswerBoxEventListeners()
@@ -529,11 +555,12 @@ function scene:show( event )
 
     elseif ( phase == "did" ) then
 
-        -- Called when the scene is now on screen.
-        -- Insert code here to make the scene come alive.
-        -- Example: start timers, begin animation, play audio, etc.
+        amountCorrect = 0
+        lives = 2
         RestartLevel1()
-        AddAnswerBoxEventListeners() 
+        AddAnswerBoxEventListeners()
+        YouWin()
+        YouLose()
 
     end
 
