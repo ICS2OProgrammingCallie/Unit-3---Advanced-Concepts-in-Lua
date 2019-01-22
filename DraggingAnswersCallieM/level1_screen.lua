@@ -79,6 +79,8 @@ local amountCorrect = 0
 
 local lives = 2
 
+local amountCorrectText
+
 -- SOUND VARIABLES
 
 local wrongSound = audio.loadSound( "Sounds/boo.mp3")
@@ -286,6 +288,8 @@ local function TouchListenerAnswerbox(touch)
 
                 amountCorrect = amountCorrect + 1
 
+                amountCorrectText.text = "Correct = ".. amountCorrect
+
                 
             --else make box go back to where it was
             else
@@ -431,7 +435,7 @@ end
 -- Transitioning Function to YouWin screen
 local function YouWin()
     if (amountCorrect == 3) then
-        composer.gotoScene( "you_win")
+        composer.gotoScene("you_win", {effect = "fade", time = 500})
     end
 end
 
@@ -522,6 +526,9 @@ function scene:create( event )
     correctText = display.newText("Correct!", display.contentWidth/2, display.contentHeight*1.3/3, nil, 50 )
     correctText:setTextColor(100/255, 47/255, 210/255)
     correctText.isVisible = false
+
+    amountCorrectText = display.newText( "Correct = ".. amountCorrect, display.contentWidth*4/5, display.contentHeight/1.5, nil, 75)
+    amountCorrectText:setTextColor(30/255, 219/255, 188/255)
 
     ----------------------------------------------------------------------------------
     --adding objects to the scene group
