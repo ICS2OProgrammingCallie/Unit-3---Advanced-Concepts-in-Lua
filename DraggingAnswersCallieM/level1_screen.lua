@@ -81,6 +81,8 @@ local lives = 2
 
 local amountCorrectText
 
+local correctText
+local incorrectText
 -- SOUND VARIABLES
 
 local wrongSound = audio.loadSound( "Sounds/boo.mp3")
@@ -91,6 +93,7 @@ local correctSoundChannel
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 -----------------------------------------------------------------------------------------
+
 
 local function DisplayQuestion()
     local randomNumber1
@@ -233,13 +236,21 @@ end
 
 
 
+local function HideCorrect()
+    correctText.isVisible = false
+end
 
+local function HideIncorrect()
+    incorrectText.isVisible = false
+end
 
 -- Function to Restart Level 1
 local function RestartLevel1()
     DisplayQuestion()
     DetermineAlternateAnswers()
-    PositionAnswers()    
+    PositionAnswers()  
+    HideIncorrect()
+    HideCorrect()  
 end
 
 
@@ -290,6 +301,7 @@ local function TouchListenerAnswerbox(touch)
 
                 amountCorrectText.text = "Correct = ".. amountCorrect
 
+                correctText.isVisible = true
                 
             --else make box go back to where it was
             else
@@ -334,7 +346,7 @@ local function TouchListenerAnswerBox1(touch)
                 CheckUserAnswerInput()
                 wrongSoundChannel = audio.play(wrongSound)
                 lives = lives - 1
-
+                incorrectText.isVisible = true
             --else make box go back to where it was
             else
                 alternateAnswerBox1.x = alternateAnswerBox1PreviousX
@@ -378,7 +390,7 @@ local function TouchListenerAnswerBox2(touch)
                 wrongSoundChannel = audio.play(wrongSound)
 
                 lives = lives - 1
-
+                incorrectText.isVisible = true
             --else make box go back to where it was
             else
                 alternateAnswerBox2.x = alternateAnswerBox2PreviousX
@@ -422,6 +434,8 @@ local function TouchListenerAnswerBox3(touch)
                 wrongSoundChannel = audio.play(wrongSound)
 
                 lives = lives - 1
+
+                incorrectText.isVisible = true
 
             --else make box go back to where it was
             else
@@ -477,11 +491,6 @@ function scene:create( event )
     -- Creating a group that associates objects with the scene
     local sceneGroup = self.view
 
-    ----------------------------------------------------------------------------------
-    ----------------------------------------------------------------------------------
-    --Inserting backgroud image and lives
-    ----------------------------------------------------------------------------------
-
     -- Insert the background image
     bkg_image = display.newImageRect("Images/Game Screen.png", 2048, 1536)
     bkg_image.anchorX = 0
@@ -517,15 +526,19 @@ function scene:create( event )
     alternateAnswerBox2PreviousX = display.contentWidth * 0.9
     alternateAnswerBox3PreviousX = display.contentWidth * 0.9
 
-
     -- the black box where the user will drag the answer
     userAnswerBoxPlaceholder = display.newImageRect("Images/userAnswerBoxPlaceholder.png",  130, 130, 0, 0)
     userAnswerBoxPlaceholder.x = display.contentWidth * 0.6
     userAnswerBoxPlaceholder.y = display.contentHeight * 0.9
 
-    correctText = display.newText("Correct!", display.contentWidth/2, display.contentHeight*1.3/3, nil, 50 )
+    correctText = display.newText("Correct!", display.contentWidth/2, display.contentHeight*1.3/3, nil, 75 )
     correctText:setTextColor(100/255, 47/255, 210/255)
     correctText.isVisible = false
+
+    -- create the incorrect text object make it invisible
+    incorrectText = display.newText( "Incorrect!", display.contentWidth/2, display.contentHeight*1.3/3, nil, 75)
+    incorrectText:setTextColor(51/255, 123/255, 230/255)
+    incorrectText.isVisible = false
 
     amountCorrectText = display.newText( "Correct = ".. amountCorrect, display.contentWidth*4/5, display.contentHeight/1.5, nil, 75)
     amountCorrectText:setTextColor(30/255, 219/255, 188/255)
@@ -568,7 +581,6 @@ function scene:show( event )
         AddAnswerBoxEventListeners()
         YouWin()
         YouLose()
-
     end
 
 end --function scene:show( event )
